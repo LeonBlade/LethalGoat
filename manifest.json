@@ -1,0 +1,11 @@
+{
+  "name": "LethalGoat",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/LeonBlade",
+  "description": "This is a mod for the vtuber Yuchi and her community",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2100",
+    "Evaisa-HookGenPatcher-0.0.5",
+    "Evaisa-LethalLib-0.7.0"
+  ]
+}
