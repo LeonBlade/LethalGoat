@@ -31,7 +31,7 @@ namespace LethalGoat
         bongoat.spawnPrefab.AddComponent<NetworkTransform>();
       Prefabs.Add("Bongoat", bongoat.spawnPrefab);
       NetworkPrefabs.RegisterNetworkPrefab(bongoat.spawnPrefab);
-      Items.RegisterShopItem(bongoat, 0);
+      Items.RegisterShopItem(bongoat, 69);
 
       sonackToiletVideo = Assets.LoadAsset<VideoClip>("Assets/toilet.mp4");
 

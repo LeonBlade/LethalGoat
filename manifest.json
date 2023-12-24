@@ -1,7 +1,7 @@
 {
   "name": "LethalGoat",
-  "version_number": "1.0.0",
-  "website_url": "https://github.com/LeonBlade",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/LeonBlade/LethalGoat",
   "description": "This is a mod for the vtuber Yuchi and her community",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100",

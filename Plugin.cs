@@ -17,7 +17,7 @@ namespace LethalGoat
       Log = Logger;
 
       Content.Load();
-      Debug.Load();
+      // Debug.Load();
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
