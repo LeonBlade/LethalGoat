@@ -206,11 +206,11 @@ namespace LethalGoat
       playerCursor.SetActive(true);
 
       playerHeldBy.inSpecialInteractAnimation = false;
-      KillSonack();
+      KillSonackServerRpc();
       yield return null;
     }
 
-    [ServerRpc(RequireOwnership = false)] private void KillSonack() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
+    [ServerRpc(RequireOwnership = false)] private void KillSonackServerRpc() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
 
     private bool IsHeldByYuchi() => Utilities.IsYuchi(playerHeldBy?.playerSteamId);
     private bool IsHeldByLeon() => Utilities.IsLeon(playerHeldBy?.playerSteamId);

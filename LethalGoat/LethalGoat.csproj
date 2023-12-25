@@ -11,11 +11,11 @@
 
   <PropertyGroup>
     <GamePath>E:\Program Files\Steam\steamapps\common\Lethal Company</GamePath>
+    <ModPlugins>C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins</ModPlugins>
+    <UnityNetcodeWeaver>..\..\..\NetcodePatcher</UnityNetcodeWeaver>
+    <UnityProject>C:\Users\LeonBlade\Desktop\LethalCompanyUnityTemplate-main\Assets\Plugins</UnityProject>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <ModPlugins>C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins</ModPlugins>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
@@ -51,11 +51,20 @@
       <HintPath>D:\LethalMods\LethalLib.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>..\..\..\NetcodePatcher\Unity.Netcode.Runtime.dll</HintPath>
+      <HintPath>$(UnityNetcodeWeaver)\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd D:\LethalMods\NetcodePatcher&#xD;&#xA;NetcodePatcher.dll $(TargetDir) deps/&#xD;&#xA;xcopy &quot;$(TargetPath)&quot; &quot;C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins&quot; /Y&#xD;&#xA;xcopy &quot;$(TargetPath)&quot; &quot;C:\Users\LeonBlade\Desktop\LethalCompanyUnityTemplate-main\Assets\Plugins&quot; /Y&#xD;&#xA;xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins&quot; /Y" />
+    <Exec Command="
+      cd $(UnityNetcodeWeaver)
+      NetcodePatcher.dll $(TargetDir) deps/ ^
+      xcopy '$(TargetPath)' '$(ModPlugins)' /Y ^
+      xcopy '$(TargetPath)' '$(UnityProject)' /Y  ^
+      xcopy '$(TargetDir)$(AssemblyName).pdb' '$(ModPlugins)' /Y" />
+    <Exec Command="
+      xcopy '$(TargetPath)' Thunderstore /Y ^
+      xcopy '$(TargetDir)$(AssemblyName).pdb' Thunderstore /Y ^
+    " />
   </Target>
 </Project>
