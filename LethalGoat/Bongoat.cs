@@ -225,7 +225,7 @@ namespace LethalGoat
           PlayRandomAudio(Clips.PickupYuchi);
         else if (IsHeldBySonack())
           PlayAudio(sonackSFX);
-        else if (IsHeldByLeon() || IsHost)
+        else if (IsHeldByLeon())
           PlayAudio(leonSFX);
         else
           PlayRandomAudio(Clips.Pickup);
