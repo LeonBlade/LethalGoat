@@ -116,7 +116,7 @@ namespace LethalGoat
 
     private void ShowerTriggerStay(On.CleanPlayerBodyTrigger.orig_OnTriggerStay orig, CleanPlayerBodyTrigger self, Collider other)
     {
-      if (other.gameObject.name == "Player")
+      if (IsOwner && other.gameObject.name == "Player")
       {
         if (other.gameObject == playerHeldBy.gameObject)
         {
@@ -132,11 +132,18 @@ namespace LethalGoat
 
     private void OnInteractTrigger(On.InteractTrigger.orig_Interact orig, InteractTrigger self, Transform playerTransform)
     {
-      if (self.transform.parent.gameObject.name.Contains("Toilet"))
+      try
       {
-        var player = playerTransform.gameObject.GetComponent<PlayerControllerB>();
-        if (IsOwner && player == playerHeldBy && IsHeldBySonack())
-          Invoke(nameof(ToiletFlushedServerRpc), 1.5f);
+        if (IsOwner && playerTransform != null && self.transform.parent != null && self.transform.parent.gameObject.name.Contains("Toilet"))
+        {
+          var player = playerTransform.gameObject.GetComponent<PlayerControllerB>();
+          if (player != null && IsOwner && player == playerHeldBy && IsHeldBySonack())
+            Invoke(nameof(ToiletFlushedServerRpc), 1.5f);
+        }
+      }
+      catch (Exception e)
+      {
+        Plugin.Log.LogError(e);
       }
       orig(self, playerTransform);
     }
@@ -218,7 +225,7 @@ namespace LethalGoat
           PlayRandomAudio(Clips.PickupYuchi);
         else if (IsHeldBySonack())
           PlayAudio(sonackSFX);
-        else if (IsHeldByLeon())
+        else if (IsHeldByLeon() || IsHost)
           PlayAudio(leonSFX);
         else
           PlayRandomAudio(Clips.Pickup);

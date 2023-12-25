@@ -51,7 +51,7 @@
       <HintPath>D:\LethalMods\LethalLib.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>..\..\NetcodePatcher\Unity.Netcode.Runtime.dll</HintPath>
+      <HintPath>..\..\..\NetcodePatcher\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 
