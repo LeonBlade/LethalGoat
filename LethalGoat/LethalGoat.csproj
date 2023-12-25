@@ -14,6 +14,7 @@
     <ModPlugins>C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins</ModPlugins>
     <UnityNetcodeWeaver>..\..\..\NetcodePatcher</UnityNetcodeWeaver>
     <UnityProject>C:\Users\LeonBlade\Desktop\LethalCompanyUnityTemplate-main\Assets\Plugins</UnityProject>
+    <PluginBuild>$(ProjectDir)Thunderstore</PluginBuild>
   </PropertyGroup>
 
 
@@ -57,14 +58,13 @@
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="
-      cd $(UnityNetcodeWeaver)
-      NetcodePatcher.dll $(TargetDir) deps/ ^
-      xcopy '$(TargetPath)' '$(ModPlugins)' /Y ^
-      xcopy '$(TargetPath)' '$(UnityProject)' /Y  ^
-      xcopy '$(TargetDir)$(AssemblyName).pdb' '$(ModPlugins)' /Y" />
-    <Exec Command="
-      xcopy '$(TargetPath)' Thunderstore /Y ^
-      xcopy '$(TargetDir)$(AssemblyName).pdb' Thunderstore /Y ^
-    " />
+cd $(UnityNetcodeWeaver)
+NetcodePatcher.dll $(TargetDir) deps/ ^
+xcopy &quot;$(TargetPath)&quot; &quot;$(ModPlugins)&quot; /Y ^
+xcopy &quot;$(TargetPath)&quot; &quot;$(UnityProject)&quot; /Y ^
+xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(ModPlugins)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(PluginBuild)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(PluginBuild)&quot; /Y" />
+    <ZipDirectory SourceDirectory="$(PluginBuild)" DestinationFile="$(SolutionDir)$(AssemblyName).zip" Overwrite="True" />
   </Target>
 </Project>

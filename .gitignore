@@ -135,3 +135,5 @@ _NCrunch*
 .vs/*
 *.dll
 *.pdb
+**/Thunderstore/lethalgoat
+*.zip
