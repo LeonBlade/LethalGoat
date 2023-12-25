@@ -63,6 +63,7 @@ NetcodePatcher.dll $(TargetDir) deps/ ^
 xcopy &quot;$(TargetPath)&quot; &quot;$(ModPlugins)&quot; /Y ^
 xcopy &quot;$(TargetPath)&quot; &quot;$(UnityProject)&quot; /Y ^
 xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(ModPlugins)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(SolutionDir)README.md&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(PluginBuild)&quot; /Y" />
     <ZipDirectory SourceDirectory="$(PluginBuild)" DestinationFile="$(SolutionDir)$(AssemblyName).zip" Overwrite="True" />
