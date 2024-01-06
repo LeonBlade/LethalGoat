@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using Unity.Netcode.Components;
 using UnityEngine.Video;
+using LethalLib.Extras;
 
 namespace LethalGoat
 {
@@ -27,13 +28,18 @@ namespace LethalGoat
       TryLoadAssets();
 
       var bongoat = Assets.LoadAsset<Item>("Assets/Bongoat.asset");
-      if (bongoat.spawnPrefab.GetComponent<NetworkTransform>() == null)
-        bongoat.spawnPrefab.AddComponent<NetworkTransform>();
+      var bongoatInfo = Assets.LoadAsset<TerminalNode>("Assets/BongoatTerminalNode.asset");
       Prefabs.Add("Bongoat", bongoat.spawnPrefab);
       NetworkPrefabs.RegisterNetworkPrefab(bongoat.spawnPrefab);
-      Items.RegisterShopItem(bongoat, 69);
+      Items.RegisterShopItem(bongoat, null, null, bongoatInfo, 69);
 
       sonackToiletVideo = Assets.LoadAsset<VideoClip>("Assets/toilet.mp4");
+
+      // var yuchi = Assets.LoadAsset<UnlockableItemDef>("Assets/YuchiCutoutUnlockable.asset");
+      // var yuchiInfo = Assets.LoadAsset<TerminalNode>("Assets/YuchiCutoutInfo.asset");
+      // yuchi.unlockable.alwaysInStock = true;
+      // NetworkPrefabs.RegisterNetworkPrefab(yuchi.unlockable.prefabObject);
+      // Unlockables.RegisterUnlockable(yuchi, yuchi.storeType, null, null, yuchiInfo, 69);
 
       Plugin.Log.LogInfo("Loaded assets");
 

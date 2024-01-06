@@ -5,7 +5,6 @@ using GameNetcodeStuff;
 using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace LethalGoat
@@ -75,10 +74,13 @@ namespace LethalGoat
       RareYuchi,
 
       HoarderBug,
-      Fail
+      Fail,
+
+      PickupSonack,
+      PickupLeon
     }
 
-    private readonly Dictionary<Clips, AudioClip[]> clipMap = new();
+    private readonly Dictionary<Clips, AudioClip[]> clipMap = [];
 
     public override void Start()
     {
@@ -93,6 +95,10 @@ namespace LethalGoat
       clipMap.Add(Clips.ShowerYuchi, showerYuchiSFX);
       clipMap.Add(Clips.Fail, quotaFailSFX);
       clipMap.Add(Clips.HoarderBug, hoarderBugSFX);
+      clipMap.Add(Clips.PickupSonack, [sonackSFX]);
+      clipMap.Add(Clips.PickupLeon, [leonSFX]);
+      clipMap.Add(Clips.Rare, [rareSFX]);
+      clipMap.Add(Clips.RareYuchi, [rareYuchiSFX]);
 
       // Listen to the the game over state
       On.StartOfRound.playersFiredGameOver += OnPlayersFired;
@@ -167,13 +173,13 @@ namespace LethalGoat
     [ClientRpc]
     private void ToiletSequenceClientRpc()
     {
+      PlayAudio(sonackToiletSFX[9]);
       if (IsOwner)
         StartCoroutine(ToiletSequence());
     }
 
     private IEnumerator ToiletSequence()
     {
-      PlayAudio(sonackToiletSFX[9]);
       while (audioSource.isPlaying) yield return null;
       yield return new WaitForSeconds(0.5f);
 
@@ -210,7 +216,8 @@ namespace LethalGoat
       yield return null;
     }
 
-    [ServerRpc(RequireOwnership = false)] private void KillSonackServerRpc() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
+    [ServerRpc(RequireOwnership = false)]
+    private void KillSonackServerRpc() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
 
     private bool IsHeldByYuchi() => Utilities.IsYuchi(playerHeldBy?.playerSteamId);
     private bool IsHeldByLeon() => Utilities.IsLeon(playerHeldBy?.playerSteamId);
@@ -224,9 +231,9 @@ namespace LethalGoat
         if (IsHeldByYuchi())
           PlayRandomAudio(Clips.PickupYuchi);
         else if (IsHeldBySonack())
-          PlayAudio(sonackSFX);
+          PlayClip(Clips.PickupSonack);
         else if (IsHeldByLeon())
-          PlayAudio(leonSFX);
+          PlayClip(Clips.PickupLeon);
         else
           PlayRandomAudio(Clips.Pickup);
         pickedUpFirstTime = true;
@@ -248,14 +255,14 @@ namespace LethalGoat
           if (TryBirthdayEvent())
             return;
         if (isRare)
-          PlayAudio(rareYuchiSFX);
+          PlayClip(Clips.RareYuchi);
         else
           PlayRandomAudio(Clips.InteractYuchi);
       }
       else
       {
         if (isRare)
-          PlayAudio(rareSFX);
+          PlayClip(Clips.Rare);
         else
           PlayRandomAudio(Clips.Interact);
       }
@@ -299,7 +306,10 @@ namespace LethalGoat
         PlayRandomAudio(Clips.HoarderBug);
     }
 
-    public void PlayShowerSFX()
+    public void PlayShowerSFX() => PlayShowerSFXServerRpc();
+    [ServerRpc(RequireOwnership = false)] private void PlayShowerSFXServerRpc() => PlayShowerSFXClientRpc();
+    [ClientRpc]
+    private void PlayShowerSFXClientRpc()
     {
       if (!tookShower)
       {
@@ -320,8 +330,10 @@ namespace LethalGoat
       while (r == lastRandomNumber);
       lastRandomNumber = r;
 
-      PlayRandomClipServerRpc(clip, r);
+      PlayClipServerRpc(clip, r);
     }
+
+    private void PlayClip(Clips clip) => PlayClipServerRpc(clip);
 
     private void PlayAudio(AudioClip clip, bool force = false)
     {
@@ -333,8 +345,7 @@ namespace LethalGoat
       RoundManager.Instance.PlayAudibleNoise(base.transform.position, audioSource.maxDistance, 1, 0, isInElevator && StartOfRound.Instance.hangarDoorsClosed);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void PlayRandomClipServerRpc(Clips clip, int i) => PlayRandomClipClientRpc(clip, i);
-    [ClientRpc] private void PlayRandomClipClientRpc(Clips clip, int i) => PlayAudio(clipMap[clip][i]);
+    [ServerRpc(RequireOwnership = false)] private void PlayClipServerRpc(Clips clip, int i = 0) => PlayClipClientRpc(clip, i);
+    [ClientRpc] private void PlayClipClientRpc(Clips clip, int i) => PlayAudio(clipMap[clip][i]);
   }
 }
