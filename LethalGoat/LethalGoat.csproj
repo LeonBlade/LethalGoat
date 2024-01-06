@@ -4,9 +4,9 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>LethalGoat</AssemblyName>
     <Description>A plugin based around the vtuber Yuchi</Description>
-    <Version>1.0.2</Version>
+    <Version>1.0.4</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -59,13 +59,13 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="
 cd $(UnityNetcodeWeaver)
-NetcodePatcher.dll $(TargetDir) deps/ ^
-xcopy &quot;$(TargetPath)&quot; &quot;$(ModPlugins)&quot; /Y ^
-xcopy &quot;$(TargetPath)&quot; &quot;$(UnityProject)&quot; /Y ^
-xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(ModPlugins)&quot; /Y" />
+NetcodePatcher.dll $(TargetDir) deps/" />
     <Exec Command="xcopy &quot;$(SolutionDir)README.md&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(PluginBuild)&quot; /Y" />
     <ZipDirectory SourceDirectory="$(PluginBuild)" DestinationFile="$(SolutionDir)$(AssemblyName).zip" Overwrite="True" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ModPlugins)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(ModPlugins)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(UnityProject)&quot; /Y" />
   </Target>
 </Project>
