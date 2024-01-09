@@ -1,3 +1,9 @@
+# 1.0.5
+
+- Adds a Yuchi cutout to buy for the ship
+- Increases rate of rare voice lines
+- Fixes some minor bugs
+
 # 1.0.4
 
 - Forgot to remove debug again
