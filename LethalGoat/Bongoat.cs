@@ -250,7 +250,7 @@ namespace LethalGoat
       if (!IsOwner)
         return;
 
-      var isRare = random.Next(100) == 99;
+      var isRare = random.Next(0, 100) < 5;
       if (IsHeldByYuchi())
       {
         if (!didBirthdayEvent)
