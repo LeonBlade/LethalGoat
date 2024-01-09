@@ -29,17 +29,29 @@ namespace LethalGoat
 
       var bongoat = Assets.LoadAsset<Item>("Assets/Bongoat.asset");
       var bongoatInfo = Assets.LoadAsset<TerminalNode>("Assets/BongoatTerminalNode.asset");
+      if (bongoat.spawnPrefab.GetComponent<NetworkTransform>() == null)
+      {
+        var networkTransform = bongoat.spawnPrefab.AddComponent<NetworkTransform>();
+        networkTransform.SlerpPosition = false;
+        networkTransform.Interpolate = false;
+        networkTransform.SyncPositionX = false;
+        networkTransform.SyncPositionY = false;
+        networkTransform.SyncPositionZ = false;
+        networkTransform.SyncScaleX = false;
+        networkTransform.SyncScaleY = false;
+        networkTransform.SyncScaleZ = false;
+        networkTransform.UseHalfFloatPrecision = true;
+      }
       Prefabs.Add("Bongoat", bongoat.spawnPrefab);
       NetworkPrefabs.RegisterNetworkPrefab(bongoat.spawnPrefab);
       Items.RegisterShopItem(bongoat, null, null, bongoatInfo, 69);
 
       sonackToiletVideo = Assets.LoadAsset<VideoClip>("Assets/toilet.mp4");
 
-      // var yuchi = Assets.LoadAsset<UnlockableItemDef>("Assets/YuchiCutoutUnlockable.asset");
-      // var yuchiInfo = Assets.LoadAsset<TerminalNode>("Assets/YuchiCutoutInfo.asset");
-      // yuchi.unlockable.alwaysInStock = true;
-      // NetworkPrefabs.RegisterNetworkPrefab(yuchi.unlockable.prefabObject);
-      // Unlockables.RegisterUnlockable(yuchi, yuchi.storeType, null, null, yuchiInfo, 69);
+      var yuchi = Assets.LoadAsset<UnlockableItemDef>("Assets/YuchiCutoutUnlockable.asset");
+      var yuchiInfo = Assets.LoadAsset<TerminalNode>("Assets/YuchiCutoutInfo.asset");
+      NetworkPrefabs.RegisterNetworkPrefab(yuchi.unlockable.prefabObject);
+      Unlockables.RegisterUnlockable(yuchi, yuchi.storeType, null, null, yuchiInfo, 130);
 
       Plugin.Log.LogInfo("Loaded assets");
 
@@ -56,11 +68,6 @@ namespace LethalGoat
           }
         }
       }
-    }
-
-    public static void Unload()
-    {
-      // Assets.Unload(true);
     }
   }
 }

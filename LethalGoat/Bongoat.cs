@@ -122,7 +122,8 @@ namespace LethalGoat
 
     private void ShowerTriggerStay(On.CleanPlayerBodyTrigger.orig_OnTriggerStay orig, CleanPlayerBodyTrigger self, Collider other)
     {
-      if (IsOwner && other.gameObject.name == "Player")
+      var player = other.gameObject.GetComponent<PlayerControllerB>();
+      if (IsOwner && player != null && other != null && playerHeldBy != null)
       {
         if (other.gameObject == playerHeldBy.gameObject)
         {
@@ -216,8 +217,9 @@ namespace LethalGoat
       yield return null;
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void KillSonackServerRpc() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
+    // Uh, idk why this doesn't work just as server???
+    [ServerRpc(RequireOwnership = false)] private void KillSonackServerRpc() => KillSonackClientRpc();
+    [ClientRpc] private void KillSonackClientRpc() => playerHeldBy.DamagePlayer(665, true, true, CauseOfDeath.Suffocation, 0, false, Vector3.up * 5f);
 
     private bool IsHeldByYuchi() => Utilities.IsYuchi(playerHeldBy?.playerSteamId);
     private bool IsHeldByLeon() => Utilities.IsLeon(playerHeldBy?.playerSteamId);
