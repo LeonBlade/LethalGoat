@@ -14,7 +14,7 @@
     <ModPlugins>C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins</ModPlugins>
     <LethalLib>$(ModPlugins)\Evaisa-LethalLib\LethalLib</LethalLib>
     <UnityNetcodeWeaver>D:\LethalMods\NetcodePatcher</UnityNetcodeWeaver>
-    <UnityProject>C:\Users\LeonBlade\Desktop\LethalCompanyUnityTemplate-main\Assets\Plugins</UnityProject>
+    <UnityProject>D:\LethalMods\LethalGoatUnity\Assets\Plugins</UnityProject>
     <PluginBuild>$(ProjectDir)Thunderstore</PluginBuild>
   </PropertyGroup>
 
