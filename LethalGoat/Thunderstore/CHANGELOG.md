@@ -1,3 +1,7 @@
+# 1.0.6
+
+- Fix issue where the most recent AssetBundle wasn't included in the zip
+
 # 1.0.5
 
 - Adds a Yuchi cutout to buy for the ship
