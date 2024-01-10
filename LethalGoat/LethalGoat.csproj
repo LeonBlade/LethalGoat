@@ -14,20 +14,24 @@
     <ModPlugins>C:\Users\LeonBlade\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Development\BepInEx\plugins</ModPlugins>
     <LethalLib>$(ModPlugins)\Evaisa-LethalLib\LethalLib</LethalLib>
     <UnityNetcodeWeaver>D:\LethalMods\NetcodePatcher</UnityNetcodeWeaver>
-    <UnityProject>D:\LethalMods\LethalGoatUnity\Assets\Plugins</UnityProject>
+    <UnityProject>D:\LethalMods\LethalGoat\Assets\Plugins</UnityProject>
     <PluginBuild>$(ProjectDir)Thunderstore</PluginBuild>
   </PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" />
+    <PackageReference Include="Evaisa.NetcodePatcher.MSBuild" Version="3.*" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <NetcodePatch Include="$(TargetPath)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,9 +62,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="
-cd $(UnityNetcodeWeaver)
-NetcodePatcher.dll $(TargetDir) deps/" />
     <Exec Command="xcopy &quot;$(SolutionDir)README.md&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(PluginBuild)&quot; /Y" />
     <Exec Command="xcopy &quot;$(TargetDir)$(AssemblyName).pdb&quot; &quot;$(PluginBuild)&quot; /Y" />
