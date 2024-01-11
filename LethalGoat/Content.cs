@@ -12,15 +12,13 @@ namespace LethalGoat
   public class Content
   {
     public static AssetBundle Assets;
-    public static Dictionary<string, GameObject> Prefabs = new Dictionary<string, GameObject>();
+    public static Dictionary<string, GameObject> Prefabs = [];
     public static VideoClip sonackToiletVideo;
 
     private static void TryLoadAssets()
     {
       if (Assets == null)
-      {
         Assets = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lethalgoat"));
-      }
     }
 
     public static void Load()
@@ -51,10 +49,15 @@ namespace LethalGoat
       var yuchi = Assets.LoadAsset<UnlockableItemDef>("Assets/YuchiCutoutUnlockable.asset");
       var yuchiInfo = Assets.LoadAsset<TerminalNode>("Assets/YuchiCutoutInfo.asset");
       NetworkPrefabs.RegisterNetworkPrefab(yuchi.unlockable.prefabObject);
-      Unlockables.RegisterUnlockable(yuchi, yuchi.storeType, null, null, yuchiInfo, 130);
+      Unlockables.RegisterUnlockable(yuchi, StoreType.Decor, null, null, yuchiInfo, 130);
+
+      PrepareNetcodePatch();
 
       Plugin.Log.LogInfo("Loaded assets");
+    }
 
+    private static void PrepareNetcodePatch()
+    {
       var types = Assembly.GetExecutingAssembly().GetTypes();
       foreach (var type in types)
       {
@@ -63,9 +66,7 @@ namespace LethalGoat
         {
           var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
           if (attributes.Length > 0)
-          {
             method.Invoke(null, null);
-          }
         }
       }
     }
